@@ -1,9 +1,11 @@
 import React from "react";
+import HeaderTitle from "../../components/Header/Title/index";
 
 export default function Footer() {
   return (
-    <footer>
-      <span>netflixroulette</span>
+    <footer className={"footer"}>
+    <HeaderTitle/>
+      {/* <span>netflixroulette</span> */}
     </footer>
   );
 }

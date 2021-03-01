@@ -4,7 +4,8 @@
 }
 html {
     max-width: 1200px;
-    color: black;
+    color: #FFFFFF;
+    background-color: #555555;    
 }
 body {
     max-width: 1020px;    
@@ -23,12 +24,14 @@ body {
 }
 .header {   
     height: 250px;
-    background-color: cornflowerblue;
+    background-color: #232323;
 }
-.header_title {       
+.logo {
     color: #f65261;
     font-size: 1.4em;
     font-weight: 700;
+}
+.header_title {       
     justify-content: space-between;
     width: 90%;
 }
@@ -76,21 +79,38 @@ body {
 
 /* Result Block */
 .result {
+    color: #FFFFFF;
+    background-color: #232323;
     margin-top: 1em;
-    width: 90%;
+    width: 100%;
+ 
+}
+.filter, 
+.result_filter,
+.result_card,
+.result_description,
+.result_description_title {
+    display: flex;
+}
+.result_card,
+.result_description_title {
+    flex-direction: column;
+}
+
+.filter,
+.result_movie_count,
+.list_result_card {
     margin-left: auto;
     margin-right: auto;
 }
 .filter {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;    
+    width: 90%;
+    justify-content: space-between; 
+    padding-top: 1em;     
 }
 .result_filter  {
     list-style: none;
-    display: flex;
     grid-gap: 1em;
-    
 }
 .result_filter li {
     height: 3.4em; 
@@ -99,13 +119,35 @@ body {
     box-sizing: border-box;
 }
 .result_filter li:hover {
-    height: 3.4em; 
     border-bottom: 3px solid #f65261;
-    cursor: pointer;
 }
 .result_movie_count {
     margin-top: -3px;
     border-top: 3px solid #555555;
     padding-top: 25px;
     padding-bottom: 25px;
+    width: 90%;
+}
+.list_result_card {
+    display: grid;
+    list-style: none;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    grid-template-rows: repeat(auto-fill, minmax(1fr, 1fr));
+    width: 90%;
+    text-align: center;
+}
+.result_card {
+    width: 100%;    
+    align-items: flex-start;
+}
+.result_description_title {
+    align-items: baseline;
+}
+.footer {
+    width: 100%;
+    text-align: center;
+    background-color: #424242;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }

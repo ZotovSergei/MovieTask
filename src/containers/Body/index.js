@@ -14,7 +14,7 @@ export default function Body() {
   });
 
   return (
-    <section className={"result"}>
+    <nav className={"result"}>
       <section className={"filter"}>
         <Filter filter={categoryFilter} />
         <Filter filter={sortFilter} />
@@ -22,6 +22,6 @@ export default function Body() {
 
       <ResultMovieCount />
       <ListResultCard />
-    </section>
+    </nav>
   );
 }

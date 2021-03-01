@@ -54,7 +54,7 @@ export default function ListResultCard() {
   ];
   const listCards = cards.map((item) => {
     return (
-      <li key={item.id}>
+      <li key={item.id} className={"result_card"}>
         <ResultCard
           id={item.id}
           img={item.image}
@@ -65,5 +65,5 @@ export default function ListResultCard() {
       </li>
     );
   });
-  return <ul>{listCards}</ul>;
+  return <ul className={"list_result_card"}>{listCards}</ul>;
 }
