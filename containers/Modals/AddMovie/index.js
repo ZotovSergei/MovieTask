@@ -1,6 +1,7 @@
 import React from "react";
 import HeaderTitle from "../../../components/Header/Title/index";
 import AddMovieButton from "../../Modals/AddMovie/Button/index";
+import Cross from '../../../components/Buttons/Cross/index'
 
 export default function AddMovie({ isViewModalBox, handlerClickAddMovie }) {
   return isViewModalBox ? (
@@ -9,7 +10,8 @@ export default function AddMovie({ isViewModalBox, handlerClickAddMovie }) {
         <HeaderTitle />
       </section>
       <section className={"add_movie_form"}>
-        <div className={"accross"} onClick={handlerClickAddMovie}></div>
+        <Cross handlerClickAddMovie={handlerClickAddMovie}/>
+        {/* <div className={"cross"} onClick={handlerClickAddMovie}></div> */}
         <form className={"form"}>
           <h3>ADD MOVIE</h3>
           <label htmlFor="title">TITLE</label>

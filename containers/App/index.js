@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Header from "../Header";
 import Body from "../Body";
 import Footer from "../Footer";
-import "../../index.css";
 import ModalBoxAddMovie from "../Modals/AddMovie/index";
+
 
 export default class App extends Component {
   constructor(props) {

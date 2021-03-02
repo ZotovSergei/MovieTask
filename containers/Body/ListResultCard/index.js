@@ -52,6 +52,8 @@ export default function ListResultCard() {
       year: "year 6",
     },
   ];
+
+  
   const listCards = cards.map((item) => {
     return (
       <li key={item.id} className={"result_card"}>
@@ -66,5 +68,6 @@ export default function ListResultCard() {
       </li>
     );
   });
+
   return <ul className={"list_result_card"}>{listCards}</ul>;
 }

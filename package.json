@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "next": "canary",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
@@ -23,7 +24,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --mode development --open --hot"
+    "start": "webpack serve --mode development --open --hot",
+    "dev": "next dev",
+    "build": "next build",
+    "nst": "next start"
   },
   "keywords": [],
   "author": "",
