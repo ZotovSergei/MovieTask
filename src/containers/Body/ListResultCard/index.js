@@ -57,7 +57,8 @@ export default function ListResultCard() {
       <li key={item.id} className={"result_card"}>
         <ResultCard
           id={item.id}
-          img={item.image}
+          // img={item.image}
+          // img={false}
           title={item.title}
           category={item.category}
           year={item.year}
