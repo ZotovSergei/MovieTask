@@ -3,13 +3,14 @@
     padding: 0;
 }
 html {
-    max-width: 1200px;
+    /* max-width: 1200px; */
     color: #FFFFFF;
     background-color: #555555;    
 }
 body {
     max-width: 1020px;    
     margin: auto;
+    position: relative;
 }
 .header, .header_finder {
     flex-direction: column;
@@ -150,4 +151,27 @@ body {
     background-color: #424242;
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+/* Modal Box Add Movie */
+
+.modal__substrate {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: #232323;
+    opacity: 1;
+    top:50%; 
+    left:50%; 
+    transform:translate(-50%, -50%); 
+}
+.modal__box {
+    z-index: 22;
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1em;
 }
