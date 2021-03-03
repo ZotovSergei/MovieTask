@@ -13,8 +13,19 @@ import App from "../containers/App/index";
 //   document.getElementById("root")
 // );
 
-function HomePage() {
+function HomePage({data}) {
+  console.log(data)
   return <App/>
 }
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`http://localhost:4000/movies`)
+  const data = await res.json()
+
+  return {
+    props: {data}, // will be passed to the page component as props
+  }
+}
+
 
 export default HomePage
