@@ -189,8 +189,8 @@ body {
 }
 
 .cross {
-    position: relative;
-    right: -80%;    
+    position: absolute;
+    right: 25%;    
     width: 32px;
     height: 32px;
     opacity: 0.3;
@@ -301,12 +301,13 @@ body {
     width: 100%;
     /* display: flex; */
     /* flex-direction: column; */
-    right: 0;
+    right: 15%;
     /* top: 1em; */
     /* align-items: start; */
     border-radius: 5px;
     /* padding: 1em; */
     text-align: start;
+    cursor: pointer;
 }
 .edit_menu > li {
     height: 1em;
@@ -315,6 +316,7 @@ body {
 .edit_menu > li:hover {
     background-color: #f65261;
     border-radius: 5px;
+    cursor: pointer;
 }
 .inner_menu_dots {
         /* background: #424242; */
@@ -329,7 +331,7 @@ body {
     right: 0;
     /* top: 1em; */
     /* align-items: baseline; */
-    border-radius: 5px;
+    /* border-radius: 5px; */
     /* padding: 1em; */
 }
 .inner_menu_dots > .cross::before,

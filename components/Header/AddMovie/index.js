@@ -1,9 +1,13 @@
 import React from "react";
 
-export default function AddMovie({handlerClickAddMovie}) {
+export default function AddMovie({ handlerClickAddMovie }) {
   return (
-    <button className={"button_addmovie"} onClick={handlerClickAddMovie}>
-      <span>+ADD MOVE</span>
+    <button
+      data-item={"add"}
+      className={"button_addmovie"}
+      onClick={handlerClickAddMovie}
+    >
+      <span data-item={"add"}>+ADD MOVE</span>
     </button>
   );
 }

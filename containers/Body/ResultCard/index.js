@@ -1,27 +1,42 @@
 import React, { useState } from "react";
-import Image from 'next/image'
-import Dots from './Dots/index'
-import InnerMenuIntoDots from './Dots/InnerMenuIntoDots/index'
+import Image from "next/image";
+import Dots from "./Dots/index";
+import InnerMenuIntoDots from "./Dots/InnerMenuIntoDots/index";
 
-export default function ResultCard({ id, img, title, category, year }) {
-
+export default function ResultCard({
+  id,
+  img,
+  title,
+  category,
+  year,
+  handlerClickEditMenuItems,
+}) {
   const [isViewDots, setViewDots] = useState(false);
   const [isViewInnerMenu, setIsViewInnerMenu] = useState(false);
 
   const handlerMouseOverImage = () => {
-    setViewDots(!isViewDots)
-  }
+    setViewDots(!isViewDots);
+  };
 
   const handlerClickOnTheDots = () => {
-    setIsViewInnerMenu(!isViewInnerMenu)
-    setViewDots(!isViewDots)
-  }
+    setIsViewInnerMenu(!isViewInnerMenu);
+  };
 
   return (
     <>
-    <Image alt={img} src={img} width={1000} height={1000}  onMouseOver={handlerMouseOverImage}/>
-      <Dots isViewDots={isViewDots} handlerClick={handlerClickOnTheDots}/>
-      <InnerMenuIntoDots isViewInnerMenu={isViewInnerMenu}/>
+      <Image
+        alt={img}
+        src={img}
+        width={1000}
+        height={1000}
+        onMouseEnter={handlerMouseOverImage}
+      />
+      <Dots isViewDots={isViewDots} handlerClick={handlerClickOnTheDots} />
+      <InnerMenuIntoDots
+        isViewInnerMenu={isViewInnerMenu}
+        handlerClick={handlerClickOnTheDots}
+        handlerClickEditMenuItems={handlerClickEditMenuItems}
+      />
       <div className={"result_description"}>
         <div className={"result_description_title"}>
           <span>{title}</span>
@@ -36,5 +51,5 @@ export default function ResultCard({ id, img, title, category, year }) {
 }
 
 ResultCard.defaultProps = {
-  img: '/me.svg',
+  img: "/me.svg",
 };
