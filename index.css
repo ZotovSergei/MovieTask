@@ -83,8 +83,7 @@ body {
     color: #FFFFFF;
     background-color: #232323;
     margin-top: 1em;
-    width: 100%;
- 
+    width: 100%;    
 }
 .filter, 
 .result_filter,
@@ -133,12 +132,13 @@ body {
     display: grid;
     list-style: none;
     grid-template-columns: 1fr 1fr 1fr;
-    /* grid-template-rows: 1fr 1fr 1fr; */
+    grid-template-rows: 1fr 1fr 1fr;
     justify-items: center;
     grid-gap: 1em;
     /* grid-template-rows: repeat(auto-fill, minmax(1fr, 550px)); */
     width: 90%;
     text-align: center;
+    word-break: break-all;    
 }
 .result_card {
     width: 100%;    
@@ -149,11 +149,15 @@ body {
     width: 100%;
 }
 .result_description {
+    margin-top: 1em;
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-between;   
+    gap: 1em; 
 }
-.result_description_title {
+.result_description_title {    
     align-items: baseline;
+    flex: 7 1;    
+    gap: 0.5em;
 }
 .footer {
     width: 100%;
@@ -339,4 +343,3 @@ body {
 .inner_menu_dots > .cross::after {
     height: 16px;
 }
-

@@ -3,8 +3,12 @@ import Filter from "../Body/Filter/index";
 import ResultMovieCount from "../Body/ResultMovieCount/index";
 import ListResultCard from "../Body/ListResultCard/index";
 
-export default function Body({ handlerClickEditMenuItems, movies }) {
-  const category = ["ALL", "DOCUMENTARY", "COMEDY", "HORROR", "CRIME"];
+export default function Body({
+  category,
+  handlerClickEditMenuItems,
+  movies,
+  actionWithPage,
+}) {
   const categoryFilter = category.map((item, index) => {
     return <li key={index}>{item}</li>;
   });
@@ -14,14 +18,18 @@ export default function Body({ handlerClickEditMenuItems, movies }) {
   });
 
   return (
-    <section className={"result"}>
+    <section className={"result"} onScroll={() => console.log(e)}>
       <section className={"filter"}>
         <Filter filter={categoryFilter} />
         <Filter filter={sortFilter} />
       </section>
 
-      <ResultMovieCount />
-      <ListResultCard handlerClickEditMenuItems={handlerClickEditMenuItems} movies={movies}/>
+      <ResultMovieCount countMovies={!!movies ? movies.length : 888} />
+      <ListResultCard
+        handlerClickEditMenuItems={handlerClickEditMenuItems}
+        movies={movies}
+        actionWithPage={actionWithPage}
+      />
     </section>
   );
 }

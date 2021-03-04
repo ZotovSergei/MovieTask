@@ -8,7 +8,16 @@ export default function AddMovie({
   handlerClickAddMovie,
   titleModalBox,
   flagModalBox,
+  category,
 }) {
+  const categoryFilter = category.map((item, index) => {
+    if (item !== "ALL")
+      return (
+        <option key={index} value={item}>
+          {item}
+        </option>
+      );
+  });
   return isViewModalBox ? (
     <section className={"modal__substrate"}>
       <section className={"modal__box"}>
@@ -33,8 +42,28 @@ export default function AddMovie({
             <input id="release" type="text" name="name" />
             <label htmlFor="movie">MOVIE URL</label>
             <input id="movie" type="text" name="name" />
-            <label htmlFor="genre">GENRE</label>
-            <input id="genre" type="text" name="name" />
+            {flagModalBox === "add" ? (
+              <>
+                <label htmlFor="genre">GENRE</label>
+                <select>
+                  multiple={true} value={categoryFilter}
+                </select>
+                {/* <select>
+                  <option value="grapefruit">Грейпфрут</option>
+                  <option value="lime">Лайм</option>
+                  <option selected value="coconut">
+                    Кокос
+                  </option>
+                  <option value="mango">Манго</option>
+                </select> */}
+              </>
+            ) : (
+              <>
+                <label htmlFor="genre">GENRE</label>
+                <input id="genre" type="text" name="name" />
+              </>
+            )}
+
             <label htmlFor="overview">OVERVIEW</label>
             <input id="overview" type="text" name="name" />
             <label htmlFor="runtime">RUNTIME</label>

@@ -1,9 +1,9 @@
 console.log("hello");
 
-
 import React from "react";
 // import ReactDOM from "react-dom";
 import App from "../containers/App/index";
+import Link from "next/link";
 // import "../index.css";
 
 // ReactDOM.render(
@@ -13,18 +13,17 @@ import App from "../containers/App/index";
 //   document.getElementById("root")
 // );
 
-function HomePage({data}) {
-  return <App movies={data}/>
+function HomePage({ url, data, offset }) {
+  return <App movies={data} url={url} offset={offset} />;
 }
-
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://localhost:4000/movies`)
-  const data = await res.json()
-
+  const offset = 1;
+  const url = `http://localhost:4000/movies`;
+  const res = await fetch(url);
+  const data = await res.json();
   return {
-    props: {data}, // will be passed to the page component as props
-  }
+    props: { data, url, offset }, // will be passed to the page component as props
+  };
 }
 
-
-export default HomePage
+export default HomePage;
