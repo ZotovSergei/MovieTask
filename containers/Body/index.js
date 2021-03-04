@@ -3,7 +3,7 @@ import Filter from "../Body/Filter/index";
 import ResultMovieCount from "../Body/ResultMovieCount/index";
 import ListResultCard from "../Body/ListResultCard/index";
 
-export default function Body({ handlerClickEditMenuItems }) {
+export default function Body({ handlerClickEditMenuItems, movies }) {
   const category = ["ALL", "DOCUMENTARY", "COMEDY", "HORROR", "CRIME"];
   const categoryFilter = category.map((item, index) => {
     return <li key={index}>{item}</li>;
@@ -21,7 +21,7 @@ export default function Body({ handlerClickEditMenuItems }) {
       </section>
 
       <ResultMovieCount />
-      <ListResultCard handlerClickEditMenuItems={handlerClickEditMenuItems} />
+      <ListResultCard handlerClickEditMenuItems={handlerClickEditMenuItems} movies={movies}/>
     </section>
   );
 }

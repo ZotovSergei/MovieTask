@@ -14,8 +14,7 @@ import App from "../containers/App/index";
 // );
 
 function HomePage({data}) {
-  console.log(data)
-  return <App/>
+  return <App movies={data}/>
 }
 
 export async function getServerSideProps(context) {

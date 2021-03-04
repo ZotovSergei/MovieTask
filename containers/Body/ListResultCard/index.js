@@ -1,7 +1,7 @@
 import React from "react";
 import ResultCard from "../ResultCard/index";
 
-export default function ListResultCard({ handlerClickEditMenuItems }) {
+export default function ListResultCard({ handlerClickEditMenuItems, movies }) {
   const cards = [
     {
       id: 1,
@@ -53,16 +53,16 @@ export default function ListResultCard({ handlerClickEditMenuItems }) {
     },
   ];
 
-  const listCards = cards.map((item) => {
+  const listCards = movies.map((item) => {
     return (
       <li key={item.id} className={"result_card"}>
         <ResultCard
           id={item.id}
-          // img={item.image}
+          img={item.poster_path}
           // img={false}
           title={item.title}
-          category={item.category}
-          year={item.year}
+          genre={item.genre}
+          year={item.release_date}
           handlerClickEditMenuItems={handlerClickEditMenuItems}
         />
       </li>

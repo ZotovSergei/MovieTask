@@ -63,7 +63,7 @@ export default class App extends Component {
           flagModalBox={this.state.flagModalBox}
         />
         <Header handlerClickAddMovie={this.handlerClickCallModalBox} />
-        <Body handlerClickEditMenuItems={this.handlerClickCallModalBox} />
+        <Body handlerClickEditMenuItems={this.handlerClickCallModalBox} movies={this.props.movies.data}/>
         <Footer />
       </>
     );

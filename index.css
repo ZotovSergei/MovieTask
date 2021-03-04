@@ -133,9 +133,10 @@ body {
     display: grid;
     list-style: none;
     grid-template-columns: 1fr 1fr 1fr;
+    /* grid-template-rows: 1fr 1fr 1fr; */
     justify-items: center;
     grid-gap: 1em;
-    /* grid-template-rows: repeat(auto-fill, minmax(1fr, 1fr)); */
+    /* grid-template-rows: repeat(auto-fill, minmax(1fr, 550px)); */
     width: 90%;
     text-align: center;
 }

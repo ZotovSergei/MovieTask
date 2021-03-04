@@ -7,7 +7,7 @@ export default function ResultCard({
   id,
   img,
   title,
-  category,
+  genre,
   year,
   handlerClickEditMenuItems,
 }) {
@@ -40,7 +40,7 @@ export default function ResultCard({
       <div className={"result_description"}>
         <div className={"result_description_title"}>
           <span>{title}</span>
-          <span>{category}</span>
+          <span>{genre}</span>
         </div>
         <div>
           <span>{year}</span>
