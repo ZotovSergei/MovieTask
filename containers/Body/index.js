@@ -8,6 +8,7 @@ export default function Body({
   handlerClickEditMenuItems,
   movies,
   actionWithPage,
+  handlerClickFilterOnCategory
 }) {
   const categoryFilter = category.map((item, index) => {
     return <li key={index}>{item}</li>;
@@ -18,9 +19,9 @@ export default function Body({
   });
 
   return (
-    <section className={"result"} onScroll={() => console.log(e)}>
+    <section className={"result"}>
       <section className={"filter"}>
-        <Filter filter={categoryFilter} />
+        <Filter filter={categoryFilter} handlerClickFilterOnCategory={handlerClickFilterOnCategory}/>
         <Filter filter={sortFilter} />
       </section>
 

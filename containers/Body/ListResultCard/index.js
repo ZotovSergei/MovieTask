@@ -6,10 +6,13 @@ export default function ListResultCard({
   movies,
   actionWithPage,
 }) {
+
   const listCards = movies.map((item) => {
     return (
       <li key={item.id} id={item.id} className={"result_card"}>
         <ResultCard
+          currentFilm={item}
+          id={item.id}
           img={null || item.poster_path}
           // img={false}
           title={item.title}

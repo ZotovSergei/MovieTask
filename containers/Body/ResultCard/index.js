@@ -10,15 +10,16 @@ export default function ResultCard({
   genres,
   year,
   handlerClickEditMenuItems,
+  currentFilm
 }) {
   const [isViewDots, setViewDots] = useState(false);
   const [isViewInnerMenu, setIsViewInnerMenu] = useState(false);
 
-  const handlerMouseOverImage = () => {
+  const handlerMouseOverImage = (e) => {
     setViewDots(!isViewDots);
   };
 
-  const handlerClickOnTheDots = () => {
+  const handlerClickOnTheDots = (e) => {
     setIsViewInnerMenu(!isViewInnerMenu);
     setViewDots(!isViewDots);
   };
@@ -39,6 +40,7 @@ export default function ResultCard({
         isViewInnerMenu={isViewInnerMenu}
         handlerClick={handlerClickOnTheDots}
         handlerClickEditMenuItems={handlerClickEditMenuItems}
+        currentFilm={currentFilm}
       />
       <div className={"result_description"}>
         <div className={"result_description_title"}>

@@ -5,7 +5,7 @@ import FinderTitle from "../../components/Finder/Title/index";
 import InputSearch from "../../components/Finder/InputSearch";
 import ButtonSearch from "../../components/Finder/ButtonSearch";
 
-export default function Header({ handlerClickAddMovie }) {
+export default function Header({ handlerClickAddMovie, handlerClickSearch }) {
   return (
     <header className={"header"}>
       <section className={"header_title"}>
@@ -15,8 +15,8 @@ export default function Header({ handlerClickAddMovie }) {
       <section className={"header_finder"}>
         <FinderTitle />
         <section className={"search_movie"}>
-          <InputSearch />
-          <ButtonSearch />
+          <InputSearch handlerClickSearch={handlerClickSearch}/>
+          <ButtonSearch handlerClickSearch={handlerClickSearch}/>
         </section>
       </section>
     </header>
