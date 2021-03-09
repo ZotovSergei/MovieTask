@@ -14,7 +14,7 @@ export default function InputSearch({handlerClickSearch}) {
         handlerClick(e,e.target.value)
       }
     })
-  })
+  },[])
 
   return (
     <>
