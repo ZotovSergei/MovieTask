@@ -10,7 +10,8 @@ export default function ResultCard({
   genres,
   year,
   handlerClickEditMenuItems,
-  currentFilm
+  currentFilm,
+  handlerClickCardWithMovie,
 }) {
   const [isViewDots, setViewDots] = useState(false);
   const [isViewInnerMenu, setIsViewInnerMenu] = useState(false);
@@ -24,6 +25,10 @@ export default function ResultCard({
     setViewDots(!isViewDots);
   };
 
+  const handlerClickCardsWithMovie = (e) => {
+    return handlerClickCardWithMovie(e, currentFilm);
+  };
+
   const reGenres = genres.join(", ");
   return (
     <>
@@ -33,7 +38,7 @@ export default function ResultCard({
         width={1000}
         height={1400}
         onMouseOver={handlerMouseOverImage}
-        onMouseDown={handlerMouseOverImage}
+        onClick={handlerClickCardsWithMovie}
       />
       <Dots isViewDots={isViewDots} handlerClick={handlerClickOnTheDots} />
       <InnerMenuIntoDots

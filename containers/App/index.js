@@ -18,24 +18,28 @@ export default class App extends Component {
       actionWithPage: "scroll",
       url: this.props.url,
       offset: this.props.offset,
-      currentCategory: 'all',
+      currentCategory: "all",
+      isViewCardMovie: false,
+      currentFilm: null,
+      tmlUrl: null,
     };
   }
   componentDidMount() {
     window.addEventListener("scroll", (e) => {
       if (
         e.target.scrollingElement.offsetHeight -
-          e.target.scrollingElement.scrollTop <=1040
+          e.target.scrollingElement.scrollTop <=
+        1040
       ) {
-        e.preventDefault();
         this.getServerSideProps();
+        e.preventDefault();
       }
     });
   }
 
   category = ["ALL", "DOCUMENTARY", "COMEDY", "HORROR", "CRIME"];
 
-  handlerClickCallModalBox = (e,currentFilm) => {
+  handlerClickCallModalBox = (e, currentFilm) => {
     if (e.target.dataset.item === "add")
       this.setState({
         isModalBoxAddMovie: !this.state.isModalBoxAddMovie,
@@ -47,7 +51,7 @@ export default class App extends Component {
         isModalBoxEditMovie: !this.state.isModalBoxEditMovie,
         flagModalBox: e.target.dataset.item,
         titleModalBox: "EDIT MOVIE",
-        currentFilm: currentFilm
+        currentFilm: currentFilm,
       });
     if (e.target.dataset.item === "delete")
       this.setState({
@@ -70,21 +74,34 @@ export default class App extends Component {
   };
 
   handlerClickFilterOnCategory = (e) => {
-    let filterFilterOnCategory = this.state.storageMovies.map((item)=>{
-      item.genres = item.genres.map(it=>it.toLocaleLowerCase())
-      return item
-    }).filter(ii=>ii.genres.indexOf(e.target.textContent.toLocaleLowerCase()) != -1);
-    if (e.target.textContent.toLocaleLowerCase() === 'all') 
-      filterFilterOnCategory = this.state.storageMovies
-    this.setState((state,props)=>({
+    let filterFilterOnCategory = this.state.storageMovies
+      .map((item) => {
+        item.genres = item.genres.map((it) => it.toLocaleLowerCase());
+        return item;
+      })
+      .filter(
+        (ii) =>
+          ii.genres.indexOf(e.target.textContent.toLocaleLowerCase()) != -1
+      );
+    if (e.target.textContent.toLocaleLowerCase() === "all")
+      filterFilterOnCategory = this.state.storageMovies;
+    this.setState((state, props) => ({
       movies: filterFilterOnCategory,
-      currentCategory: e.target.textContent
-    }))
-  }
+      currentCategory: e.target.textContent,
+    }));
+  };
 
-  handlerClickSearch = (e,searchStr) => {
-    this.getStaticProps(searchStr)
-  }
+  handlerClickOnBackSearchButton = (e) => {
+    this.setState({ isViewCardMovie: !this.state.isViewCardMovie });
+  };
+
+  handlerClickCardWithMovie = (e, currentFilm) => {
+    this.setState({ isViewCardMovie: true, currentFilm: currentFilm });
+  };
+
+  handlerClickSearch = (e, searchStr) => {
+    this.getStaticProps(searchStr);
+  };
 
   render() {
     return (
@@ -101,11 +118,18 @@ export default class App extends Component {
           category={this.category}
           currentFilm={this.state.currentFilm}
         />
-        <Header handlerClickAddMovie={this.handlerClickCallModalBox} handlerClickSearch={this.handlerClickSearch}/>
+        <Header
+          handlerClickAddMovie={this.handlerClickCallModalBox}
+          handlerClickSearch={this.handlerClickSearch}
+          isViewCardMovie={this.state.isViewCardMovie}
+          handlerClickOnBackSearchButton={this.handlerClickOnBackSearchButton}
+          currentFilm={this.state.currentFilm}
+        />
         <Body
           category={this.category}
           handlerClickFilterOnCategory={this.handlerClickFilterOnCategory}
           handlerClickEditMenuItems={this.handlerClickCallModalBox}
+          handlerClickCardWithMovie={this.handlerClickCardWithMovie}
           movies={
             !!this.state.movies ? this.state.movies : this.props.movies.data
           }
@@ -117,9 +141,9 @@ export default class App extends Component {
   }
 
   async getStaticProps(context) {
-    this.setState({offset: 0})
-    let url = this.state.url + "?offset=" + (this.state.offset*1 + 1);
-    if (url) url = url + '&search='+context+'&searchBy=title'; 
+    this.setState({ offset: 0 });
+    let url = this.state.url + "?offset=" + (this.state.offset * 1 + 1);
+    if (url) url = url + "&search=" + context + "&searchBy=title";
     const res = await fetch(url);
     const movies1 = await res.json();
     for (let i = 0; i < movies1.data.length; i++) {
@@ -136,20 +160,26 @@ export default class App extends Component {
       movies: movies1.data,
       offset: state.offset + 1,
     }));
-    debugger
+    debugger;
     return {
       props: { movies1 }, // will be passed to the page component as props
     };
   }
 
-
   async getServerSideProps(context) {
-    let url = this.state.url + "?offset=" + (this.state.offset*1+1).toString();
+    let url = this.state.url + "?offset=" + (this.state.offset * 1 + 1);
     // console.log(url)
     // `http://localhost:4000/movies?search=comedy&searchBy=genres`
-    const res = await fetch(url);
-    const movies1 = await res.json();
-    const tmpMovies = [];
+    let res = null;
+    let movies1 = null;
+    console.log(url);
+    // if (url != this.state.tmlUrl) {
+    // this.setState({ tmpUrl: url });
+    res = await fetch(url);
+    movies1 = await res.json();
+    // }
+
+    // const tmpMovies = [];
     // for (let i = 0; i < movies1.data.length; i++) {
     //   const element = movies1.data[i];
     //   const film = JSON.stringify(element);
@@ -161,6 +191,8 @@ export default class App extends Component {
     //     // delete movies1.data[i];
     //   }
     // }
+    console.log(this.state.storageMovies);
+    console.log(this.state.movies);
     this.setState({
       // storageMovies: state.storageMovies.concat(tmpMovies),
       // movies: state.movies.concat(tmpMovies),

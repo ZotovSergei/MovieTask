@@ -5,8 +5,8 @@ export default function ListResultCard({
   handlerClickEditMenuItems,
   movies,
   actionWithPage,
+  handlerClickCardWithMovie,
 }) {
-
   const listCards = movies.map((item) => {
     return (
       <li key={item.id} id={item.id} className={"result_card"}>
@@ -19,6 +19,7 @@ export default function ListResultCard({
           genres={item.genres}
           year={item.release_date}
           handlerClickEditMenuItems={handlerClickEditMenuItems}
+          handlerClickCardWithMovie={handlerClickCardWithMovie}
         />
       </li>
     );
