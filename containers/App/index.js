@@ -3,7 +3,8 @@ import Header from "../Header";
 import Body from "../Body";
 import Footer from "../Footer";
 import ModalBoxAddMovie from "../Modals/AddMovie/index";
-
+import { setMovies, getMovies } from "../../src/store/actionCreators";
+import store from "../../src/store/index";
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -25,17 +26,23 @@ export default class App extends Component {
     };
   }
   componentDidMount() {
-    window.addEventListener("scroll", (e) => {
-      if (
-        e.target.scrollingElement.offsetHeight -
-          e.target.scrollingElement.scrollTop <=
-        1040
-      ) {
-        this.getServerSideProps();
-        e.preventDefault();
-      }
-    });
+    window.addEventListener("scroll", this.scrollEventonWindow, true);
+
+    store.dispatch(setMovies(this.props.movies));
+    store.dispatch(getMovies());
+    console.log(store.getState());
   }
+
+  scrollEventonWindow = (e) => {
+    if (
+      e.target.scrollingElement.offsetHeight -
+        e.target.scrollingElement.scrollTop <=
+      1040
+    ) {
+      this.getServerSideProps();
+      e.preventDefault();
+    }
+  };
 
   category = ["ALL", "DOCUMENTARY", "COMEDY", "HORROR", "CRIME"];
 
@@ -146,17 +153,17 @@ export default class App extends Component {
     if (url) url = url + "&search=" + context + "&searchBy=title";
     const res = await fetch(url);
     const movies1 = await res.json();
-    for (let i = 0; i < movies1.data.length; i++) {
-      const element = movies1.data[i];
-      const film = JSON.stringify(element);
-      if (
-        JSON.stringify(Object.values(this.state.movies)).indexOf(film) !== -1
-      ) {
-        delete movies1.data[i];
-      }
-    }
+    // for (let i = 0; i < movies1.data.length; i++) {
+    //   const element = movies1.data[i];
+    //   const film = JSON.stringify(element);
+    //   if (
+    //     JSON.stringify(Object.values(this.state.movies)).indexOf(film) !== -1
+    //   ) {
+    //     delete movies1.data[i];
+    //   }
+    // }
     this.setState((state, props) => ({
-      storageMovies: state.storageMovies.concat(movies1.data),
+      // storageMovies: state.storageMovies.concat(movies1.data),
       movies: movies1.data,
       offset: state.offset + 1,
     }));
