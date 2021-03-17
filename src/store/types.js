@@ -2,6 +2,8 @@ const types = {
   SET_MOVIES: "SET_MOVIES",
   GET_MOVIES: "GET_MOVIES",
   ADD_MOVIES: "ADD_MOVIES",
+  REQUEST_POSTS: "REQUEST_POSTS",
+  RECEIVE_POSTS: "RECEIVE_POSTS",
 };
 
 export default types;

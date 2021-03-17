@@ -3,9 +3,15 @@ import Header from "../Header";
 import Body from "../Body";
 import Footer from "../Footer";
 import ModalBoxAddMovie from "../Modals/AddMovie/index";
-import { setMovies, getMovies } from "../../src/store/actionCreators";
+import {
+  setMovies,
+  getMovies,
+  addMovies,
+  fetchData,
+} from "../../src/store/actionCreators";
 import store from "../../src/store/index";
-export default class App extends Component {
+import { connect } from "react-redux";
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,11 +20,15 @@ export default class App extends Component {
       isModalBoxDeleteMovie: false,
       titleModalBox: "ADD MOVIE",
       flagModalBox: "add",
-      movies: this.props.movies.data,
-      storageMovies: this.props.movies.data,
+      movies: [],
+      // movies: this.props.movies.data,
+      storageMovies: null,
+      // storageMovies: this.props.movies.data,
       actionWithPage: "scroll",
-      url: this.props.url,
-      offset: this.props.offset,
+      url: "http://localhost:4000/movies",
+      // url: this.props.url,
+      offset: 10,
+      // offset: this.props.offset,
       currentCategory: "all",
       isViewCardMovie: false,
       currentFilm: null,
@@ -26,11 +36,7 @@ export default class App extends Component {
     };
   }
   componentDidMount() {
-    window.addEventListener("scroll", this.scrollEventonWindow, true);
-
-    store.dispatch(setMovies(this.props.movies));
-    store.dispatch(getMovies());
-    console.log(store.getState());
+    window.addEventListener("scroll", this.scrollEventonWindow, false);
   }
 
   scrollEventonWindow = (e) => {
@@ -39,8 +45,13 @@ export default class App extends Component {
         e.target.scrollingElement.scrollTop <=
       1040
     ) {
-      this.getServerSideProps();
-      e.preventDefault();
+      const state = store.getState();
+      this.setState((prev, props) => ({
+        movies: state.fetchMovies.storageMovies,
+      }));
+      store.dispatch(fetchData(state.fetchMovies.stateLoading.offset || 0));
+      console.log(store.getState());
+      // this.getServerSideProps();
     }
   };
 
@@ -137,9 +148,8 @@ export default class App extends Component {
           handlerClickFilterOnCategory={this.handlerClickFilterOnCategory}
           handlerClickEditMenuItems={this.handlerClickCallModalBox}
           handlerClickCardWithMovie={this.handlerClickCardWithMovie}
-          movies={
-            !!this.state.movies ? this.state.movies : this.props.movies.data
-          }
+          // movies={!!this.state.movies ? this.state.movies : this.props.movies}
+          movies={this.state.movies}
           actionWithPage={this.state.actionWithPage}
         />
         <Footer />
@@ -167,7 +177,6 @@ export default class App extends Component {
       movies: movies1.data,
       offset: state.offset + 1,
     }));
-    debugger;
     return {
       props: { movies1 }, // will be passed to the page component as props
     };
@@ -198,13 +207,14 @@ export default class App extends Component {
     //     // delete movies1.data[i];
     //   }
     // }
+    // store.dispatch(addMovies(movies1));
     console.log(this.state.storageMovies);
-    console.log(this.state.movies);
+    console.log("this.props.movies", this.props.movies);
     this.setState({
       // storageMovies: state.storageMovies.concat(tmpMovies),
       // movies: state.movies.concat(tmpMovies),
-      storageMovies: this.state.storageMovies.concat(movies1.data),
-      movies: this.state.movies.concat(movies1.data),
+      // storageMovies: this.state.storageMovies.concat(movies1.data),
+      // movies: this.state.movies.concat(movies1.data),
       offset: this.state.offset + 10,
     });
     // console.log(this.state.storageMovies)
@@ -214,3 +224,13 @@ export default class App extends Component {
     };
   }
 }
+
+const mapStateToProps = (store) => {
+  // debugger;
+  // const { data } = store.movies.movies;
+  return {
+    // movies: data,
+  };
+};
+
+export default connect(mapStateToProps)(App);
