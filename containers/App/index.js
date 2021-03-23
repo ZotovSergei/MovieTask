@@ -8,6 +8,7 @@ import {
   getMovies,
   addMovies,
   fetchData,
+  changeUrl,
 } from "../../src/store/actionCreators";
 import store from "../../src/store/index";
 import { connect } from "react-redux";
@@ -25,17 +26,33 @@ class App extends Component {
       storageMovies: null,
       // storageMovies: this.props.movies.data,
       actionWithPage: "scroll",
-      url: "http://localhost:4000/movies",
+      // url: "http://localhost:4000/movies",
       // url: this.props.url,
-      offset: 10,
+      // offset: 10,
       // offset: this.props.offset,
       currentCategory: "all",
       isViewCardMovie: false,
       currentFilm: null,
-      tmlUrl: null,
+      // category: null,
     };
   }
   componentDidMount() {
+    // store.dispatch(fetchData(0));
+    const state = store.getState();
+    // store.dispatch(fetchData(this.props.url, this.props.offset)).then(() => {
+    //   this.setState((prev, props) => ({
+    //     movies: state.fetchMovies.storageMovies,
+    //     storageMovies: state.fetchMovies.storageMovies,
+    //   }));
+    // });
+    store
+      .dispatch(fetchData(state.url.url, state.url.offset, null))
+      .then(() => {
+        this.setState((prev, props) => ({
+          movies: state.fetchMovies.storageMovies,
+          storageMovies: state.fetchMovies.storageMovies,
+        }));
+      });
     window.addEventListener("scroll", this.scrollEventonWindow, false);
   }
 
@@ -46,11 +63,43 @@ class App extends Component {
       1040
     ) {
       const state = store.getState();
-      this.setState((prev, props) => ({
-        movies: state.fetchMovies.storageMovies,
-      }));
-      store.dispatch(fetchData(state.fetchMovies.stateLoading.offset || 0));
-      console.log(store.getState());
+      // if (state.url.category != null) {
+      //   this.setState((prev, props) => ({
+      //     // movies: state.fetchMovies.movies,
+      //     movies: state.fetchMovies.moviesForCategory,
+      //   }));
+      // } else {
+      //   this.setState((prev, props) => ({
+      //     // movies: state.fetchMovies.movies,
+      //     movies: state.fetchMovies.storageMovies,
+      //   }));
+      // }
+      store.dispatch(
+        changeUrl({
+          url: store.getState().url.url,
+          offset: store.getState().url.offset + 10,
+        })
+      );
+      debugger;
+      // this.setState((prev, props) => ({
+      //   // movies: state.fetchMovies.movies,
+      //   movies: state.fetchMovies.storageMovies,
+      // }));
+      store
+        .dispatch(
+          fetchData(
+            store.getState().url.url,
+            store.getState().url.offset,
+            store.getState().fetchMovies.stateLoading.category
+          )
+        )
+        .then((response) => {
+          this.setState((prev, props) => ({
+            movies: state.fetchMovies.storageMovies,
+            // storageMovies: state.fetchMovies.movies,
+          }));
+        });
+      // console.log(store.getState());
       // this.getServerSideProps();
     }
   };
@@ -92,21 +141,77 @@ class App extends Component {
   };
 
   handlerClickFilterOnCategory = (e) => {
-    let filterFilterOnCategory = this.state.storageMovies
-      .map((item) => {
-        item.genres = item.genres.map((it) => it.toLocaleLowerCase());
-        return item;
-      })
-      .filter(
-        (ii) =>
-          ii.genres.indexOf(e.target.textContent.toLocaleLowerCase()) != -1
+    const state = store.getState();
+    const category = e.target.textContent.toLocaleLowerCase();
+
+    if (category === "all") {
+      store.dispatch(
+        changeUrl({
+          url: "http://localhost:4000/movies?",
+          offset: 0,
+          category: null,
+        })
       );
-    if (e.target.textContent.toLocaleLowerCase() === "all")
-      filterFilterOnCategory = this.state.storageMovies;
-    this.setState((state, props) => ({
-      movies: filterFilterOnCategory,
-      currentCategory: e.target.textContent,
-    }));
+      store
+        .dispatch(
+          fetchData(
+            store.getState().url.url,
+            store.getState().url.offset,
+            category
+          )
+        )
+        .then((response) => {
+          // debugger;
+          this.setState((prev, props) => ({
+            movies: response.movies,
+            storageMovies: response.movies,
+          }));
+        });
+    } else {
+      store.dispatch(
+        changeUrl({
+          url:
+            "http://localhost:4000/movies?search=" +
+            category +
+            "&searchBy=genres&",
+          offset: 0,
+          // category: category,
+        })
+      );
+      store
+        .dispatch(
+          fetchData(
+            store.getState().url.url,
+            store.getState().url.offset,
+            category
+          )
+        )
+        .then((response) => {
+          // debugger;
+          this.setState((prev, props) => ({
+            movies: response.movies,
+            storageMovies: response.movies,
+          }));
+        });
+    }
+
+    // debugger;
+
+    // let filterFilterOnCategory = this.state.storageMovies
+    //   .map((item) => {
+    //     item.genres = item.genres.map((it) => it.toLocaleLowerCase());
+    //     return item;
+    //   })
+    //   .filter(
+    //     (ii) =>
+    //       ii.genres.indexOf(e.target.textContent.toLocaleLowerCase()) != -1
+    //   );
+    // if (e.target.textContent.toLocaleLowerCase() === "all")
+    //   filterFilterOnCategory = this.state.storageMovies;
+    // this.setState((state, props) => ({
+    //   movies: filterFilterOnCategory,
+    //   currentCategory: e.target.textContent,
+    // }));
   };
 
   handlerClickOnBackSearchButton = (e) => {
@@ -149,87 +254,21 @@ class App extends Component {
           handlerClickEditMenuItems={this.handlerClickCallModalBox}
           handlerClickCardWithMovie={this.handlerClickCardWithMovie}
           // movies={!!this.state.movies ? this.state.movies : this.props.movies}
-          movies={this.state.movies}
+          movies={this.state.movies || this.props.movies}
           actionWithPage={this.state.actionWithPage}
         />
         <Footer />
       </>
     );
   }
-
-  async getStaticProps(context) {
-    this.setState({ offset: 0 });
-    let url = this.state.url + "?offset=" + (this.state.offset * 1 + 1);
-    if (url) url = url + "&search=" + context + "&searchBy=title";
-    const res = await fetch(url);
-    const movies1 = await res.json();
-    // for (let i = 0; i < movies1.data.length; i++) {
-    //   const element = movies1.data[i];
-    //   const film = JSON.stringify(element);
-    //   if (
-    //     JSON.stringify(Object.values(this.state.movies)).indexOf(film) !== -1
-    //   ) {
-    //     delete movies1.data[i];
-    //   }
-    // }
-    this.setState((state, props) => ({
-      // storageMovies: state.storageMovies.concat(movies1.data),
-      movies: movies1.data,
-      offset: state.offset + 1,
-    }));
-    return {
-      props: { movies1 }, // will be passed to the page component as props
-    };
-  }
-
-  async getServerSideProps(context) {
-    let url = this.state.url + "?offset=" + (this.state.offset * 1 + 1);
-    // console.log(url)
-    // `http://localhost:4000/movies?search=comedy&searchBy=genres`
-    let res = null;
-    let movies1 = null;
-    console.log(url);
-    // if (url != this.state.tmlUrl) {
-    // this.setState({ tmpUrl: url });
-    res = await fetch(url);
-    movies1 = await res.json();
-    // }
-
-    // const tmpMovies = [];
-    // for (let i = 0; i < movies1.data.length; i++) {
-    //   const element = movies1.data[i];
-    //   const film = JSON.stringify(element);
-    //   if (
-    //     JSON.stringify(Object.values(this.state.movies)).indexOf(film) !== -1
-    //   ) {
-    //     // tmpMovies.push(movies1.data[i])
-    //     // movies1.data.splice(i,1)
-    //     // delete movies1.data[i];
-    //   }
-    // }
-    // store.dispatch(addMovies(movies1));
-    console.log(this.state.storageMovies);
-    console.log("this.props.movies", this.props.movies);
-    this.setState({
-      // storageMovies: state.storageMovies.concat(tmpMovies),
-      // movies: state.movies.concat(tmpMovies),
-      // storageMovies: this.state.storageMovies.concat(movies1.data),
-      // movies: this.state.movies.concat(movies1.data),
-      offset: this.state.offset + 10,
-    });
-    // console.log(this.state.storageMovies)
-    // console.log(this.state.movies)
-    return {
-      props: { movies1 }, // will be passed to the page component as props
-    };
-  }
 }
 
 const mapStateToProps = (store) => {
-  // debugger;
-  // const { data } = store.movies.movies;
+  const { category, url, offset } = store.url;
   return {
-    // movies: data,
+    category: category,
+    offset: offset,
+    url: url,
   };
 };
 

@@ -6,7 +6,7 @@ import App from "../containers/App/index";
 import { Provider } from "react-redux";
 import Link from "next/link";
 import store from "../src/store/index";
-import { setMovies } from "../src/store/actionCreators";
+import { setMovies, fetchData } from "../src/store/actionCreators";
 // import "../index.css";
 
 // ReactDOM.render(
@@ -18,6 +18,9 @@ import { setMovies } from "../src/store/actionCreators";
 
 function HomePage({ url, data, offset }) {
   // store.dispatch(setMovies(data));
+  // store
+  //   .dispatch(fetchData(0))
+  //   .then(() => console.log("pages", store.getState()));
   return (
     <Provider store={store}>
       <App /* movies={data} url={url} offset={offset} */ />;

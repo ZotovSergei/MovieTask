@@ -4,6 +4,7 @@ const types = {
   ADD_MOVIES: "ADD_MOVIES",
   REQUEST_POSTS: "REQUEST_POSTS",
   RECEIVE_POSTS: "RECEIVE_POSTS",
+  CHANGE_CURRENT_URL: "CHANGE_CURRENT_URL",
 };
 
 export default types;

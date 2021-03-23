@@ -1,24 +1,33 @@
 import Types from "../store/types";
-const setMovies = (goal) => ({
-  type: Types.SET_MOVIES,
-  payload: {
-    movies: goal,
-  },
-});
 
-const getMovies = (goal) => ({
-  type: Types.GET_MOVIES,
-  payload: {
-    movies: goal,
-  },
-});
+const changeUrl = (goal) => {
+  return {
+    type: Types.CHANGE_CURRENT_URL,
+    url: goal.url,
+    offset: goal.offset,
+    category: goal.category,
+  };
+};
+// const setMovies = (goal) => ({
+//   type: Types.SET_MOVIES,
+//   payload: {
+//     movies: goal,
+//   },
+// });
 
-const addMovies = (goal) => ({
-  type: Types.ADD_MOVIES,
-  payload: {
-    movies: goal,
-  },
-});
+// const getMovies = (goal) => ({
+//   type: Types.GET_MOVIES,
+//   payload: {
+//     movies: goal,
+//   },
+// });
+
+// const addMovies = (goal) => ({
+//   type: Types.ADD_MOVIES,
+//   payload: {
+//     movies: goal,
+//   },
+// });
 
 const requestPosts = (goal) => {
   return {
@@ -36,16 +45,18 @@ const receivePosts = (subreddit, json) => {
   };
 };
 
-const fetchData = (offset) => (dispatch) => {
+const fetchData = (url, offset, category) => (dispatch) => {
   dispatch(
     requestPosts({
       isLoading: true,
       isError: false,
       isValidate: true,
-      offset: 0,
+      category: category,
+      // offset: 0,
     })
   );
-  return fetch("http://localhost:4000/movies" + "?offset=" + offset)
+  // "http://localhost:4000/movies?search=COMEDY&searchBy=genres&offset=10"
+  return fetch(url + "offset=" + offset)
     .then((response) => response.json())
     .then((json) =>
       dispatch(
@@ -54,17 +65,19 @@ const fetchData = (offset) => (dispatch) => {
             isLoading: false,
             isError: false,
             isValidate: true,
-            offset: offset + 10,
+            category: category,
+            // offset: offset + 10,
           },
           json
         )
       )
     );
+  // .then(() => dispatch(changeUrl({ url: url, offset: offset + 10 })));
 };
 
-export { setMovies };
-export { getMovies };
-export { addMovies };
+// export { setMovies };
+// export { getMovies };
+export { changeUrl };
 export { requestPosts };
 export { receivePosts };
 export { fetchData };

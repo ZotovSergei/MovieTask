@@ -1,5 +1,4 @@
-import { combineReducers } from "redux";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunk from "redux-thunk";
 import Types from "../store/types";
 
@@ -29,10 +28,12 @@ const initFetchMoviesState = {
     isLoading: true,
     isError: false,
     isValidate: true,
-    offset: 0,
+    category: null,
+    // offset: 0,
   },
   movies: [],
   storageMovies: [],
+  moviesForCategory: [],
 };
 const fetchMovies = (state = initFetchMoviesState, action) => {
   switch (action.type) {
@@ -40,6 +41,11 @@ const fetchMovies = (state = initFetchMoviesState, action) => {
       return state;
     case Types.RECEIVE_POSTS:
       state.storageMovies = state.storageMovies.concat(action.movies);
+      state.moviesForCategory = state.storageMovies.concat(action.movies);
+      if (state.stateLoading.category != action.stateLoading.category) {
+        state.storageMovies = action.movies;
+      }
+      debugger;
       // let map = action.movies.map((item) => {
       //   const isSome = state.movies.some((el) => {
       //     return el.id == item.id;
@@ -47,7 +53,7 @@ const fetchMovies = (state = initFetchMoviesState, action) => {
       //   if (!isSome) return item;
       // });
       // if (map.length != 0) state.movies = [...state.movies, ...map];
-      debugger;
+      // debugger;
       return Object.assign({}, state, action);
     default:
       return state;
@@ -62,20 +68,37 @@ const fetchMovies = (state = initFetchMoviesState, action) => {
 //   }
 // };
 
-const addMovies = (state = {}, action) => {
+const changeUrlStateInit = {
+  url: "http://localhost:4000/movies?",
+  offset: 0,
+  category: null,
+};
+const changeUrl = (state = changeUrlStateInit, action) => {
   switch (action.type) {
-    case Types.ADD_MOVIES:
-      return {
-        ...state,
-      };
+    case Types.CHANGE_CURRENT_URL:
+      // debugger;
+      return !!action ? Object.assign({}, action) : state;
+    // return Object.assign({}, state, action);
     default:
       return state;
   }
 };
 
+// const addMovies = (state = {}, action) => {
+//   switch (action.type) {
+//     case Types.ADD_MOVIES:
+//       return {
+//         ...state,
+//       };
+//     default:
+//       return state;
+//   }
+// };
+
 const rootReducer = combineReducers({
-  movies: movies,
+  // movies: movies,
   fetchMovies,
+  url: changeUrl,
 });
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
 export default store;
