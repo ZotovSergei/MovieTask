@@ -25,7 +25,7 @@ class App extends Component {
       // movies: this.props.movies.data,
       storageMovies: null,
       // storageMovies: this.props.movies.data,
-      actionWithPage: "scroll",
+      // actionWithPage: "scroll",
       // url: "http://localhost:4000/movies",
       // url: this.props.url,
       // offset: 10,
@@ -60,7 +60,7 @@ class App extends Component {
     if (
       e.target.scrollingElement.offsetHeight -
         e.target.scrollingElement.scrollTop <=
-      1040
+      1140
     ) {
       const state = store.getState();
       // if (state.url.category != null) {
@@ -80,7 +80,6 @@ class App extends Component {
           offset: store.getState().url.offset + 10,
         })
       );
-      debugger;
       // this.setState((prev, props) => ({
       //   // movies: state.fetchMovies.movies,
       //   movies: state.fetchMovies.storageMovies,

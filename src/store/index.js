@@ -23,6 +23,16 @@ const movies = (state = [], action) => {
   }
 };
 
+const editMovie = (state = [], action) => {
+  switch (action.type) {
+    case Types.EDIT_MOVIES:
+      debugger;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const initFetchMoviesState = {
   stateLoading: {
     isLoading: true,
@@ -45,7 +55,7 @@ const fetchMovies = (state = initFetchMoviesState, action) => {
       if (state.stateLoading.category != action.stateLoading.category) {
         state.storageMovies = action.movies;
       }
-      debugger;
+
       // let map = action.movies.map((item) => {
       //   const isSome = state.movies.some((el) => {
       //     return el.id == item.id;
@@ -97,6 +107,7 @@ const changeUrl = (state = changeUrlStateInit, action) => {
 
 const rootReducer = combineReducers({
   // movies: movies,
+  editMovie,
   fetchMovies,
   url: changeUrl,
 });

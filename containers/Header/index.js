@@ -41,8 +41,8 @@ export default function Header({
           <section className={"header_current_film"}>
             <div className="header_current_film_poster">
               <Image
-                alt={!!currentFilm ? currentFilm.poster_path : "/me.svg"}
-                src={!!currentFilm ? currentFilm.poster_path : "/me.svg"}
+                alt={currentFilm.poster_path || "/me.svg"}
+                src={currentFilm.poster_path || "/me.svg"}
                 width={1000}
                 height={1400}
               />

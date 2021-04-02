@@ -8,6 +8,27 @@ const changeUrl = (goal) => {
     category: goal.category,
   };
 };
+
+const editMovies = (goal) => {
+  return {
+    type: Types.EDIT_MOVIES,
+    movie: goal,
+  };
+};
+const editRequestMovies = (url, config) => (dispatch) => {
+  return fetch(url, config).then((response) => dispatch(editMovies(response)));
+};
+
+const deleteMovie = (goal) => {
+  return {
+    type: Types.DELETE_MOVIE,
+    response: goal,
+  };
+};
+
+const asyncRequestDeleteMovie = (goal) => {
+  return fetch(url, config).then((response) => dispatch(deleteMovie(response)));
+};
 // const setMovies = (goal) => ({
 //   type: Types.SET_MOVIES,
 //   payload: {
@@ -81,3 +102,5 @@ export { changeUrl };
 export { requestPosts };
 export { receivePosts };
 export { fetchData };
+export { editRequestMovies };
+export { asyncRequestDeleteMovie };

@@ -13,7 +13,7 @@ export default function ListResultCard({
         <ResultCard
           currentFilm={item}
           id={item.id}
-          img={null || item.poster_path}
+          img={item.poster_path || "/me.svg"}
           // img={false}
           title={item.title}
           genres={item.genres}

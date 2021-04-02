@@ -2,6 +2,11 @@ import React from "react";
 import HeaderTitle from "../../../components/Header/Title/index";
 import AddMovieButton from "../../Modals/AddMovie/Button/index";
 import Cross from "../../../components/Buttons/Cross/index";
+import store from "../../../src/store/index";
+import {
+  editRequestMovies,
+  asyncRequestDeleteMovie,
+} from "../../../src/store/actionCreators";
 
 export default function ModalBoxAddMovie({
   isViewModalBox,
@@ -9,38 +14,68 @@ export default function ModalBoxAddMovie({
   titleModalBox,
   flagModalBox,
   category,
-  currentFilm
+  currentFilm,
 }) {
-
-   const onSubmit = async (e) => {
-    e.preventDefault(); 
-    console.log('text');
-    let url = 'http://localhost:4000/movies';
-    let method = 'POST'
-    if (flagModalBox === 'edit') {
-      method = "PUT"
+  const onSubmit = async (e) => {
+    debugger;
+    e.preventDefault();
+    let url = "http://localhost:4000/movies";
+    let method = "POST";
+    if (flagModalBox === "edit") {
+      method = "PUT";
     }
+    let body = {
+      id: currentFilm.id,
+      title: e.target[1].value,
+      tagline: currentFilm.tagline,
+      vote_average: currentFilm.vote_average,
+      vote_count: currentFilm.vote_count,
+      release_date: e.target[2].value,
+      poster_path: currentFilm.poster_path,
+      overview: currentFilm.overview,
+      budget: currentFilm.budget,
+      revenue: currentFilm.revenue,
+      runtime: +e.target[6].value,
+      genres: e.target[4].value.split(","),
+    };
     let config = {
-      "title": e.target[0].value,
-      "tagline": "Here's to the fools who dream.",
-      "vote_average": 7.9,
-      "vote_count": 6782,
-      "release_date": e.target[1].value,
-      "poster_path": "https://image.tmdb.org/t/p/w500/ylXCdC106IKiarftHkcacasaAcb.jpg",
-      "overview": e.target[4].value,
-      "budget": 30000000,
-      "revenue": 445435700,
-      "runtime": e.target[5].value,
-      "genres": e.target[3].value
-    }
-    debugger
-    const response = await fetch(url,{
       method: method,
-      body: JSON.stringify(config)
-    })
-    console.log(response)
-    return response.json()
-  }
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+    store.dispatch(editRequestMovies(url, config));
+    // const response = await fetch(url, {
+    //   method: method,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     accept: "application/json",
+    //   },
+    //   body: JSON.stringify(config),
+    // });
+    // console.log(response);
+    // return response.json();
+  };
+
+  const onSubmitDeleteMovie = async (e) => {
+    e.preventDefault();
+    let url = "http://localhost:4000/movies";
+    let method = "DELETE";
+    let body = {
+      id: currentFilm.id,
+    };
+    let config = {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+    store.dispatch(asyncRequestDeleteMovie(url, config));
+  };
 
   const categoryFilter = category.map((item, index) => {
     if (item !== "ALL")
@@ -58,37 +93,54 @@ export default function ModalBoxAddMovie({
       <section className={"add_movie_form"}>
         <Cross handlerClickAddMovie={handlerClickAddMovie} />
         {flagModalBox !== "delete" ? (
-          <form className={"form"} onSubmit={onSubmit}>
+          <form className={"form"} onSubmit={(e) => onSubmit(e, currentFilm)}>
             <h3>{titleModalBox}</h3>
             {flagModalBox === "edit" ? (
               <>
                 <label htmlFor="movie-id">MOVIE ID</label>
-                <input id="movie-id" type="text" name="name" defaultValue={currentFilm.id } readOnly/>
+                <input
+                  id="movie-id"
+                  type="text"
+                  name="name"
+                  defaultValue={currentFilm.id}
+                  readOnly
+                />
                 <label htmlFor="title">TITLE</label>
-                <input id="title" type="text" name="name"  defaultValue={currentFilm.title }/>
+                <input
+                  id="title"
+                  type="text"
+                  name="name"
+                  defaultValue={currentFilm.title}
+                  required
+                />
                 <label htmlFor="release">RELEASE DATE</label>
-                <input id="release" type="date" name="name" defaultValue={currentFilm.release_date }/>
+                <input
+                  id="release"
+                  type="date"
+                  name="name"
+                  defaultValue={currentFilm.release_date}
+                />
                 <label htmlFor="movie">MOVIE URL</label>
-                <input id="movie" type="text" name="name"/>
+                <input id="movie" type="text" name="name" />
               </>
             ) : (
               <>
-              <label htmlFor="title">TITLE</label>
-              <input id="title" type="text" name="name"/>
-              <label htmlFor="release">RELEASE DATE</label>
-              <input id="release" type="date" name="name"/>
-              <label htmlFor="movie">MOVIE URL</label>
-              <input id="movie" type="text" name="name"/>
+                <label htmlFor="title">TITLE</label>
+                <input id="title" type="text" name="name" />
+                <label htmlFor="release">RELEASE DATE</label>
+                <input id="release" type="date" name="name" />
+                <label htmlFor="movie">MOVIE URL</label>
+                <input id="movie" type="text" name="name" />
               </>
             )}
-           
+
             {flagModalBox === "add" ? (
               <>
                 <label htmlFor="genre">GENRE</label>
                 <select>
                   multiple={true} value={categoryFilter}
                 </select>
-                
+
                 {/* <select>
                   <option value="grapefruit">Грейпфрут</option>
                   <option value="lime">Лайм</option>
@@ -105,16 +157,30 @@ export default function ModalBoxAddMovie({
             ) : (
               <>
                 <label htmlFor="genre">GENRE</label>
-                <input id="genre" type="text" name="name"/*  value={"" || currentFilm.genres } *//>
+                <input
+                  id="genre"
+                  type="text"
+                  name="name" /*  value={"" || currentFilm.genres } */
+                  required
+                />
                 <label htmlFor="overview">OVERVIEW</label>
-                <input id="overview" type="text" name="name" defaultValue={"" || currentFilm.overview }/>
+                <input
+                  id="overview"
+                  type="text"
+                  name="name"
+                  defaultValue={"" || currentFilm.overview}
+                />
                 <label htmlFor="runtime">RUNTIME</label>
-                <input id="runtime" type="text" name="name" defaultValue={"" || currentFilm.runtime }/>
+                <input
+                  id="runtime"
+                  type="text"
+                  name="name"
+                  defaultValue={"" || currentFilm.runtime}
+                  required
+                />
               </>
             )}
 
-            
-            
             <div className={"wrapper_modal_button"}>
               <AddMovieButton
                 textOnTheButton={"RESET"}
@@ -131,14 +197,17 @@ export default function ModalBoxAddMovie({
             </div>
           </form>
         ) : (
-          <form className={"form"}>
+          <form
+            className={"form"}
+            onSubmit={(e) => onSubmitDeleteMovie(e, currentFilm)}
+          >
             <h3>{titleModalBox}</h3>
             <label>Are you sure you want to delete this movie?</label>
             <div className={"wrapper_modal_button"}>
               <AddMovieButton
                 textOnTheButton={"CONFIRM"}
                 classNameButton={"modal-button submit_button"}
-                typeElements={"button"}
+                typeElements={"submit"}
               />
             </div>
           </form>

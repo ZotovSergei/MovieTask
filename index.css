@@ -72,7 +72,7 @@ body {
   font-size: 1.2em;
 }
 .rating {
-  padding: 0.6em;
+  padding: 0.8em;
   border: 1px solid;
   border-radius: 50%;
   width: 1.2em;
@@ -304,11 +304,20 @@ body {
   border-radius: 5px;
   color: #ffffff;
 }
-.form > select {
+/* .form > select {
   background-color: #424242;
   outline: none;
   border-radius: 5px;
   color: #ffffff;
+} */
+select {
+  background-color: #232323;
+  outline: none;
+  border-radius: 5px;
+  color: #ffffff;
+  /* height: 18px; */
+  border-radius: 0px;
+  border: 0px
 }
 .form > label {
   padding-top: 15px;

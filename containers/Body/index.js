@@ -15,8 +15,22 @@ export default function Body({
   const categoryFilter = category.map((item, index) => {
     return <li key={index}>{item}</li>;
   });
-  const sort = ["SORT BY", "RELEASE DATE"];
+  const sort = ["SORT BY", ["RELEASE DATE", "GENRE", "RATING"]];
+  //   <select>
+  //   multiple={true} value={categoryFilter}
+  // </select>
   const sortFilter = sort.map((item, index) => {
+    if (typeof item === "object") {
+      const i = item.map((el, idx) => {
+        return (
+          <option key={idx} value={el}>
+            {el}
+          </option>
+        );
+      });
+      const select = <select>value={i}</select>;
+      item = select;
+    }
     return <li key={index}>{item}</li>;
   });
 

@@ -34,7 +34,7 @@ export default function ResultCard({
     <>
       <Image
         alt={img}
-        src={img}
+        src={img || "/me.svg"}
         width={1000}
         height={1400}
         onMouseOver={handlerMouseOverImage}
