@@ -1,5 +1,6 @@
 import React from "react";
-import Filter from "../Body/Filter/index";
+import Filter from "./Filter/Filter";
+import FilterOrder from "./Filter/FilterOrder";
 import ResultMovieCount from "../Body/ResultMovieCount/index";
 import ListResultCard from "../Body/ListResultCard/index";
 import NoMoviesFound from "./NoMoviesFound/Index";
@@ -11,6 +12,7 @@ export default function Body({
   actionWithPage,
   handlerClickFilterOnCategory,
   handlerClickCardWithMovie,
+  handlerSortClick,
 }) {
   const categoryFilter = category.map((item, index) => {
     return <li key={index}>{item}</li>;
@@ -41,7 +43,10 @@ export default function Body({
           filter={categoryFilter}
           handlerClickFilterOnCategory={handlerClickFilterOnCategory}
         />
-        <Filter filter={sortFilter} />
+        <FilterOrder
+          filter={sortFilter}
+          handlerClickFilterOnCategory={handlerSortClick}
+        />
       </section>
 
       <ResultMovieCount countMovies={!!movies ? movies.length : 888} />

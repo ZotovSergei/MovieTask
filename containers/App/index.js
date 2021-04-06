@@ -22,6 +22,7 @@ class App extends Component {
       titleModalBox: "ADD MOVIE",
       flagModalBox: "add",
       movies: [],
+      orderBy: "release_date",
       // movies: this.props.movies.data,
       storageMovies: null,
       // storageMovies: this.props.movies.data,
@@ -62,7 +63,7 @@ class App extends Component {
         e.target.scrollingElement.scrollTop <=
       1140
     ) {
-      const state = store.getState();
+      // const state = store.getState();
       // if (state.url.category != null) {
       //   this.setState((prev, props) => ({
       //     // movies: state.fetchMovies.movies,
@@ -93,8 +94,10 @@ class App extends Component {
           )
         )
         .then((response) => {
+          const st = store.getState();
+          debugger;
           this.setState((prev, props) => ({
-            movies: state.fetchMovies.storageMovies,
+            movies: store.getState().fetchMovies.storageMovies,
             // storageMovies: state.fetchMovies.movies,
           }));
         });
@@ -193,24 +196,6 @@ class App extends Component {
           }));
         });
     }
-
-    // debugger;
-
-    // let filterFilterOnCategory = this.state.storageMovies
-    //   .map((item) => {
-    //     item.genres = item.genres.map((it) => it.toLocaleLowerCase());
-    //     return item;
-    //   })
-    //   .filter(
-    //     (ii) =>
-    //       ii.genres.indexOf(e.target.textContent.toLocaleLowerCase()) != -1
-    //   );
-    // if (e.target.textContent.toLocaleLowerCase() === "all")
-    //   filterFilterOnCategory = this.state.storageMovies;
-    // this.setState((state, props) => ({
-    //   movies: filterFilterOnCategory,
-    //   currentCategory: e.target.textContent,
-    // }));
   };
 
   handlerClickOnBackSearchButton = (e) => {
@@ -222,7 +207,71 @@ class App extends Component {
   };
 
   handlerClickSearch = (e, searchStr) => {
-    this.getStaticProps(searchStr);
+    if (searchStr === "" || searchStr == null) {
+      return;
+    }
+    store.dispatch(
+      changeUrl({
+        url:
+          "http://localhost:4000/movies?search=" +
+          searchStr +
+          "&searchBy=title&",
+        offset: 0,
+        category: searchStr,
+      })
+    );
+    store
+      .dispatch(
+        fetchData(
+          store.getState().url.url,
+          store.getState().url.offset,
+          searchStr
+        )
+      )
+      .then((response) => {
+        // debugger;
+        this.setState((prev, props) => ({
+          movies: response.movies,
+          storageMovies: response.movies,
+        }));
+      });
+    // this.getStaticProps(searchStr);
+  };
+
+  handlerSortClick = (e) => {
+    if (e.target.textContent === "SORT BY") {
+      const st = store.getState();
+      store.dispatch(
+        changeUrl({
+          url:
+            store.getState().url.url +
+            "sortBy=" +
+            this.state.orderBy +
+            "&sortOrder=desc&searchBy=title&",
+          offset: 0,
+          category: null,
+        })
+      );
+      store
+        .dispatch(
+          fetchData(
+            store.getState().url.url +
+              "sortBy=" +
+              this.state.orderBy +
+              "&sortOrder=desc&searchBy=title&",
+            store.getState().url.offset + 10,
+            "release_date"
+          )
+        )
+        .then((response) => {
+          debugger;
+          this.setState((prev, props) => ({
+            movies: response.movies,
+            storageMovies: response.movies,
+          }));
+        });
+    } else {
+    }
   };
 
   render() {
@@ -250,6 +299,7 @@ class App extends Component {
         <Body
           category={this.category}
           handlerClickFilterOnCategory={this.handlerClickFilterOnCategory}
+          handlerSortClick={this.handlerSortClick}
           handlerClickEditMenuItems={this.handlerClickCallModalBox}
           handlerClickCardWithMovie={this.handlerClickCardWithMovie}
           // movies={!!this.state.movies ? this.state.movies : this.props.movies}
