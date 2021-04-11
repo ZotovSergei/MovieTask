@@ -89,7 +89,7 @@ class App extends Component {
         .dispatch(
           fetchData(
             store.getState().url.url,
-            store.getState().url.offset,
+            store.getState().url.offset+10,
             store.getState().fetchMovies.stateLoading.category
           )
         )
@@ -173,9 +173,8 @@ class App extends Component {
       store.dispatch(
         changeUrl({
           url:
-            "http://localhost:4000/movies?search=" +
-            category +
-            "&searchBy=genres&",
+            "http://localhost:4000/movies?filter=" +
+            category + "&",
           offset: 0,
           // category: category,
         })
@@ -241,6 +240,8 @@ class App extends Component {
   handlerSortClick = (e) => {
     if (e.target.textContent === "SORT BY") {
       const st = store.getState();
+      const thisState = this.state;
+      debugger
       store.dispatch(
         changeUrl({
           url:
@@ -252,19 +253,16 @@ class App extends Component {
           category: null,
         })
       );
+
       store
         .dispatch(
           fetchData(
-            store.getState().url.url +
-              "sortBy=" +
-              this.state.orderBy +
-              "&sortOrder=desc&searchBy=title&",
-            store.getState().url.offset + 10,
+            store.getState().url.url,
+            store.getState().url.offset,
             "release_date"
           )
         )
         .then((response) => {
-          debugger;
           this.setState((prev, props) => ({
             movies: response.movies,
             storageMovies: response.movies,

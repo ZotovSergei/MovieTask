@@ -86,7 +86,8 @@ const changeUrlStateInit = {
 const changeUrl = (state = changeUrlStateInit, action) => {
   switch (action.type) {
     case Types.CHANGE_CURRENT_URL:
-      // debugger;
+      const d = !!action ? Object.assign({}, action) : state;
+      debugger;
       return !!action ? Object.assign({}, action) : state;
     // return Object.assign({}, state, action);
     default:

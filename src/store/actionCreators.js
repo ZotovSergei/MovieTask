@@ -67,6 +67,7 @@ const receivePosts = (subreddit, json) => {
 };
 
 const fetchData = (url, offset, category) => (dispatch) => {
+  debugger
   dispatch(
     requestPosts({
       isLoading: true,
