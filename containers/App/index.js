@@ -37,6 +37,7 @@ class App extends Component {
       // category: null,
     };
   }
+
   componentDidMount() {
     // store.dispatch(fetchData(0));
     const state = store.getState();
@@ -46,8 +47,9 @@ class App extends Component {
     //     storageMovies: state.fetchMovies.storageMovies,
     //   }));
     // });
+    debugger
     store
-      .dispatch(fetchData(state.url.url, state.url.offset, null))
+      .dispatch(fetchData(state.url.url+state.url.sortOrder+state.url.sortBy, state.url.offset, null))
       .then(() => {
         this.setState((prev, props) => ({
           movies: state.fetchMovies.storageMovies,
@@ -78,6 +80,8 @@ class App extends Component {
       store.dispatch(
         changeUrl({
           url: store.getState().url.url,
+          sortOrder: store.getState().url.sortOrder,
+          sortBy: store.getState().url.sortBy,
           offset: store.getState().url.offset + 10,
         })
       );
@@ -88,14 +92,13 @@ class App extends Component {
       store
         .dispatch(
           fetchData(
-            store.getState().url.url,
+            store.getState().url.url + store.getState().url.sortOrder + store.getState().url.sortBy,
             store.getState().url.offset+10,
             store.getState().fetchMovies.stateLoading.category
           )
         )
         .then((response) => {
-          const st = store.getState();
-          debugger;
+          // const st = store.getState();
           this.setState((prev, props) => ({
             movies: store.getState().fetchMovies.storageMovies,
             // storageMovies: state.fetchMovies.movies,
@@ -150,6 +153,8 @@ class App extends Component {
       store.dispatch(
         changeUrl({
           url: "http://localhost:4000/movies?",
+          sortOrder: store.getState().url.sortOrder,
+          sortBy: store.getState().url.sortBy,
           offset: 0,
           category: null,
         })
@@ -157,7 +162,7 @@ class App extends Component {
       store
         .dispatch(
           fetchData(
-            store.getState().url.url,
+            store.getState().url.url + store.getState().url.sortOrder + store.getState().url.sortBy,
             store.getState().url.offset,
             category
           )
@@ -175,6 +180,8 @@ class App extends Component {
           url:
             "http://localhost:4000/movies?filter=" +
             category + "&",
+          sortOrder: store.getState().url.sortOrder,
+          sortBy: store.getState().url.sortBy,  
           offset: 0,
           // category: category,
         })
@@ -182,7 +189,7 @@ class App extends Component {
       store
         .dispatch(
           fetchData(
-            store.getState().url.url,
+            store.getState().url.url+store.getState().url.sortOrder+store.getState().url.sortBy,
             store.getState().url.offset,
             category
           )
@@ -241,25 +248,23 @@ class App extends Component {
     if (e.target.textContent === "SORT BY") {
       const st = store.getState();
       const thisState = this.state;
-      debugger
+      console.log(store.getState().url.url)
       store.dispatch(
         changeUrl({
-          url:
-            store.getState().url.url +
-            "sortBy=" +
-            this.state.orderBy +
-            "&sortOrder=desc&searchBy=title&",
+          url: store.getState().url.url,
+          sortOrder: store.getState().url.sortOrder,
+          sortBy: store.getState().url.sortBy,
           offset: 0,
-          category: null,
+          category:  this.state.orderBy,
         })
       );
 
       store
         .dispatch(
           fetchData(
-            store.getState().url.url,
+            store.getState().url.url + store.getState().url.sortOrder + store.getState().url.sortBy,
             store.getState().url.offset,
-            "release_date"
+            this.state.orderBy,
           )
         )
         .then((response) => {
@@ -271,6 +276,45 @@ class App extends Component {
     } else {
     }
   };
+
+  handlerSortChangeItem = (e) => {
+      let orderBy = "release_date";
+      debugger
+      switch (e.target.value.toLocaleLowerCase()) {
+        case "rating":
+          store.dispatch(
+            changeUrl({
+              url: store.getState().url.url,
+              sortOrder: "sortOrder=desc&",
+              sortBy: "sortBy=vote_average&",
+              offset: 0,
+              category: "vote_average",
+            })
+          );
+          orderBy = "vote_average";
+          break;
+        case "genre":
+          orderBy= "genres";
+          break;
+        case "release date":
+          store.dispatch(
+            changeUrl({
+              url: store.getState().url.url,
+              sortOrder: "sortOrder=desc&",
+              sortBy: "sortBy=release_date&",
+              offset: 0,
+              category: "release_date",
+            })
+          );
+          orderBy = "release_date";
+        break;
+        default:
+          break;
+      }
+      this.setState((prev, props) => ({
+        orderBy: orderBy
+      }));
+  }
 
   render() {
     return (
@@ -300,6 +344,7 @@ class App extends Component {
           handlerSortClick={this.handlerSortClick}
           handlerClickEditMenuItems={this.handlerClickCallModalBox}
           handlerClickCardWithMovie={this.handlerClickCardWithMovie}
+          handlerSortChangeItem={this.handlerSortChangeItem}
           // movies={!!this.state.movies ? this.state.movies : this.props.movies}
           movies={this.state.movies || this.props.movies}
           actionWithPage={this.state.actionWithPage}

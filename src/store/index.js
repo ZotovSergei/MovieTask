@@ -80,6 +80,8 @@ const fetchMovies = (state = initFetchMoviesState, action) => {
 
 const changeUrlStateInit = {
   url: "http://localhost:4000/movies?",
+  sortOrder: "",
+  sortBy: "",
   offset: 0,
   category: null,
 };

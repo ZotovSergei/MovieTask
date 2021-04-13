@@ -13,6 +13,7 @@ export default function Body({
   handlerClickFilterOnCategory,
   handlerClickCardWithMovie,
   handlerSortClick,
+  handlerSortChangeItem
 }) {
   const categoryFilter = category.map((item, index) => {
     return <li key={index}>{item}</li>;
@@ -30,7 +31,7 @@ export default function Body({
           </option>
         );
       });
-      const select = <select>value={i}</select>;
+      const select = <select onChange={handlerSortChangeItem}>value={i}</select>;
       item = select;
     }
     return <li key={index}>{item}</li>;

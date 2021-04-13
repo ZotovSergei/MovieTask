@@ -4,6 +4,8 @@ const changeUrl = (goal) => {
   return {
     type: Types.CHANGE_CURRENT_URL,
     url: goal.url,
+    sortOrder: goal.sortOrder,
+    sortBy: goal.sortBy,
     offset: goal.offset,
     category: goal.category,
   };
