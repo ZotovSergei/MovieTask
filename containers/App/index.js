@@ -12,6 +12,8 @@ import {
 } from "../../src/store/actionCreators";
 import store from "../../src/store/index";
 import { connect } from "react-redux";
+import {BrowserRouter as Router,Switch,NavLink,Route} from 'react-router-dom'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -351,7 +353,7 @@ class App extends Component {
         />
         <Footer />
       </>
-    );
+    )
   }
 }
 

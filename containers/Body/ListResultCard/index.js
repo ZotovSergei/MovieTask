@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ResultCard from "../ResultCard/index";
+import {Link} from 'react-router-dom'
 
 export default function ListResultCard({
   handlerClickEditMenuItems,
@@ -10,6 +11,7 @@ export default function ListResultCard({
   const listCards = movies.map((item) => {
     return (
       <li key={item.id} id={item.id} className={"result_card"}>
+        {/* <Link to={`/card/${item.id}`}> */}
         <ResultCard
           currentFilm={item}
           id={item.id}
@@ -20,7 +22,8 @@ export default function ListResultCard({
           year={item.release_date}
           handlerClickEditMenuItems={handlerClickEditMenuItems}
           handlerClickCardWithMovie={handlerClickCardWithMovie}
-        />
+          />
+          {/* </Link> */}
       </li>
     );
   });

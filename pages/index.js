@@ -23,7 +23,7 @@ function HomePage({ url, data, offset }) {
   //   .then(() => console.log("pages", store.getState()));
   return (
     <Provider store={store}>
-      <App /* movies={data} url={url} offset={offset} */ />;
+        <App /* movies={data} url={url} offset={offset} */ />
     </Provider>
   );
   // </Provider>;

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import HeaderTitle from "../../../components/Header/Title/index";
 import AddMovieButton from "../../Modals/AddMovie/Button/index";
 import Cross from "../../../components/Buttons/Cross/index";
@@ -16,28 +16,52 @@ export default function ModalBoxAddMovie({
   category,
   currentFilm,
 }) {
+
+  const changeSelectGenres = (e) => {
+    let select = [];
+    select.push(e.target.value)
+    setGenres(select)
+  }
+  const [genres,setGenres] = useState([]);
   const onSubmit = async (e) => {
     debugger;
     e.preventDefault();
     let url = "http://localhost:4000/movies";
     let method = "POST";
+    let title = e.target[0].value;
+    let release_date = e.target[1].value;
+    let runtime = e.target[5].value;
     if (flagModalBox === "edit") {
       method = "PUT";
+      title = e.target[1].value;
+      release_date = e.target[2].value;
+      runtime = e.target[6].value;
     }
     let body = {
-      id: currentFilm.id,
-      title: e.target[1].value,
-      tagline: currentFilm.tagline,
-      vote_average: currentFilm.vote_average,
-      vote_count: currentFilm.vote_count,
-      release_date: e.target[2].value,
-      poster_path: currentFilm.poster_path,
-      overview: currentFilm.overview,
-      budget: currentFilm.budget,
-      revenue: currentFilm.revenue,
-      runtime: +e.target[6].value,
-      genres: e.target[4].value.split(","),
+      // id: currentFilm.id,
+      title: title,
+      // tagline: currentFilm.tagline,
+      // vote_average: currentFilm.vote_average,
+      // vote_count: currentFilm.vote_count,
+      release_date: release_date,
+      poster_path: !!currentFilm ? currentFilm.poster_path : e.target[2].value,
+      overview: !!currentFilm ? currentFilm.overview : e.target[4].value,
+      // budget: currentFilm.budget,
+      // revenue: currentFilm.revenue,
+      runtime: +runtime,
+      // genres: e.target[4].value.split(","),
+      genres: genres,
     };
+    if (flagModalBox === "edit") {
+      body.id = currentFilm.id;
+      body.tagline = currentFilm.tagline;
+      body.vote_average = currentFilm.vote_average;
+      body.vote_count = currentFilm.vote_count;
+      // body.poster_path = currentFilm.poster_path;
+      body.overview = currentFilm.overview;
+      body.budget = currentFilm.budget;
+      body.revenue = currentFilm.revenue;
+    }
     let config = {
       method: method,
       headers: {
@@ -137,7 +161,7 @@ export default function ModalBoxAddMovie({
             {flagModalBox === "add" ? (
               <>
                 <label htmlFor="genre">GENRE</label>
-                <select>
+                <select onChange={changeSelectGenres}>
                   multiple={true} value={categoryFilter}
                 </select>
 

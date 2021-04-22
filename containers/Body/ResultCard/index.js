@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Dots from "./Dots/index";
 import InnerMenuIntoDots from "./Dots/InnerMenuIntoDots/index";
+import {useRouter} from 'next/router'
+import { route } from "next/dist/next-server/server/router";
 
 export default function ResultCard({
   id,
@@ -15,6 +17,7 @@ export default function ResultCard({
 }) {
   const [isViewDots, setViewDots] = useState(false);
   const [isViewInnerMenu, setIsViewInnerMenu] = useState(false);
+  const router = useRouter();
 
   const handlerMouseOverImage = (e) => {
     setViewDots(!isViewDots);
@@ -26,6 +29,7 @@ export default function ResultCard({
   };
 
   const handlerClickCardsWithMovie = (e) => {
+    router.push(`/?card/${currentFilm.id}`,undefined, {shallow: true});
     return handlerClickCardWithMovie(e, currentFilm);
   };
 
